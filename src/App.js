@@ -9,9 +9,23 @@ function App() {
   const [buscaCol, setBuscaCol] = useState('');
   const [buscaBis, setBuscaBis] = useState('');
   const [buscaCama, setBuscaCama] = useState('');
-  const [maFiltCol, setMaFiltCol] = useState([])
-  const [maFiltBis, setMaFiltBis] = useState([])
-  const [maFiltCama, setMaFiltCama] = useState([])
+  const [maFiltCol, setMaFiltCol] = useState([]);
+  const [maFiltBis, setMaFiltBis] = useState([]);
+  const [maFiltCama, setMaFiltCama] = useState([]);
+  const [shoppingCart, setShoppingCart] = useState([]);
+  
+  const shop =(product, qtd) => {
+    setShoppingCart(prevState => [...prevState, {
+      product,
+      qtd: qtd
+    }]) 
+  }
+  const unShop=(product) => {
+    console.log(product)
+    setShoppingCart(prevState => prevState.filter(
+      elem => elem.product != product
+    ))
+  }
 
   useEffect(() => {
     if (buscaCol == ''){
@@ -87,6 +101,9 @@ function App() {
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
+        {shoppingCart.map((elem, index) => (
+          <li onClick={() => unShop(elem.product)} key={index}>{elem.product} {elem.qtd}</li>
+        ))}
         <p>
           Seu Pet merece o melhor!
           </p>
@@ -108,7 +125,7 @@ function App() {
               type="text"
               name="nome"/>
           {maFiltCol.map((marcaCol) => (
-              <li key={marcaCol}>{marcaCol}</li>
+              <li onClick={() => shop(marcaCol, QtdColeira)} key={marcaCol}>{marcaCol}</li>
             )) }
             </div>
           <p></p>
@@ -129,7 +146,7 @@ function App() {
               type="text"
               name="nome"/>
           {maFiltBis.map((marcaBis) => (
-              <li key={marcaBis}>{marcaBis}</li>
+              <li onClick={() => shop(marcaBis, QtdBiscoito)} key={marcaBis}>{marcaBis}</li>
             )) }
           </div>
           <p></p>
@@ -151,7 +168,7 @@ function App() {
               type="text"
               name="nome"/>
           {maFiltCama.map((marcaCama) => (
-              <li key={marcaCama}>{marcaCama}</li>
+              <li onClick={() => shop(marcaCama, QtdCama)} key={marcaCama}>{marcaCama}</li>
             )) }
           </div>
           <p></p>
